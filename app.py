@@ -3,7 +3,7 @@ import random
 import string
 import psycopg2
 
-from flask import Flask, request
+from flask import Flask, request, redirect, url_for
 
 app = Flask(__name__)
 
@@ -50,7 +50,6 @@ def dbinput():
         </form>
 
         <br>
-        <a href="/database">View Database</a>
 
     </body>
     </html>
@@ -85,17 +84,7 @@ def submit_input():
     cur.close()
     conn.close()
 
-    return """
-    <html>
-    <body>
-
-        <h1>String Added Successfully</h1>
-
-        <a href="/database">View Database</a>
-
-    </body>
-    </html>
-    """
+    return redirect(url_for("database"))
 
 
 # =========================
@@ -141,15 +130,6 @@ def database():
 
     for row in rows:
         output += f"<li>{row[0]} : {row[1]}</li>"
-
-    output += """
-        </ul>
-
-        <a href="/dbinput">Add Another String</a>
-
-    </body>
-    </html>
-    """
 
     cur.close()
     conn.close()
